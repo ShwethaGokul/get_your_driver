@@ -396,7 +396,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   if (!_formKeyUserName.currentState!.validate() || !_formKeySingUpMobileNumber.currentState!.validate() || !_formKeyEmail.currentState!.validate()) {
                     return;
                   }
-                  signUpClick(phoneSignUpTextEditingController.text);
+                  signUpClick(mobNumber: phoneSignUpTextEditingController.text,username: usernameTextEditingController.text,emailId: emailTextEditingController.text);
                 },
               ),
             ),
@@ -406,13 +406,16 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  signUpClick(var mobNumber) async {
+  signUpClick({var username, var mobNumber, var emailId}) async {
     var headers = {
       'Cookie': 'ci_session=5ac53b9fb5f52fecf4fa02849e196d74d3854cac'
     };
     var request = http.MultipartRequest(
-        'POST', Uri.parse('https://www.getyourdriver.com/user/signin'));
-    request.fields.addAll({'mobile': '${mobNumber}'});
+        'POST', Uri.parse('https://www.getyourdriver.com/user/signup'));
+    request.fields.addAll({"name": username,
+    "mobile": mobNumber,
+    "email": emailId,
+    "src": "Mobile"});
 
     request.headers.addAll(headers);
 
