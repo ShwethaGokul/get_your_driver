@@ -34,7 +34,9 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
+
   final String title;
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -43,19 +45,23 @@ class _MyHomePageState extends State<MyHomePage> {
   LoginController _loginController = Get.put(LoginController());
   LoginPage loginPage = Get.put(LoginPage());
   final _formKeyMobileNumber = GlobalKey<FormState>();
- var phoneTextEditingController = new TextEditingController();
+  final _formKeySingUpMobileNumber = GlobalKey<FormState>();
+  final _formKeyUserName = GlobalKey<FormState>();
+  final _formKeyEmail= GlobalKey<FormState>();
+  var phoneTextEditingController = new TextEditingController();
+  var phoneSignUpTextEditingController = new TextEditingController();
+  var usernameTextEditingController = new TextEditingController();
+  var emailTextEditingController = new TextEditingController();
   var checkBoxValue = false.obs;
 
-
   final _radioSelected = 1.obs;
-
-
 
   var sellEarnList = [
     "In City",
     "Monthly Package",
     "Out Station",
   ];
+
   _buildPopupDialog() {
     showModalBottomSheet(
         context: context,
@@ -63,99 +69,94 @@ class _MyHomePageState extends State<MyHomePage> {
           borderRadius: BorderRadius.only(
               topRight: Radius.circular(15), topLeft: Radius.circular(15)),
         ),
-        builder: (context) => Obx(()=>Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: Container(
-              child: Column(
-                  children:[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                _loginController.isSignIn.value = true;
-                                _loginController.isSignUp.value = false;
-                              });
-                            },
-                            child: Container(
-                              width: Get.width / 2.3,
-                              margin: const EdgeInsets.only(left: 10),
-                              decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(5)),
-                                  border: Border.all(color: AppColors.redIconGradient1),
-                                  color:
-                                  _loginController.isSignIn.value
-                                      ? AppColors.redIconGradient1
-                                      :
-                                  Colors.white),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 20.0, right: 20, top: 10, bottom: 10),
-                                child: Center(
-                                  child: Text(
-                                    "SIGN IN",
-                                    style: TextStyle(
-                                        color:
-                                        _loginController.isSignIn.value
-                                            ? Colors.white
-                                            : Colors.black,
-                                        fontSize: 18),
-                                  ),
-                                ),
-                              ),
+        builder: (context) => Obx(() => Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Container(
+                child: Column(children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          _loginController.isSignIn.value = true;
+                          _loginController.isSignUp.value = false;
+                        });
+                      },
+                      child: Container(
+                        width: Get.width / 2.3,
+                        margin: const EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                            border:
+                                Border.all(color: AppColors.redIconGradient1),
+                            color: _loginController.isSignIn.value
+                                ? AppColors.redIconGradient1
+                                : Colors.white),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20.0, right: 20, top: 10, bottom: 10),
+                          child: Center(
+                            child: Text(
+                              "SIGN IN",
+                              style: TextStyle(
+                                  color: _loginController.isSignIn.value
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 18),
                             ),
                           ),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                _loginController.isSignIn.value = false;
-                                _loginController.isSignUp.value = true;
-                              });
-                            },
-                            child: Container(
-                              width: Get.width / 2.4,
-                              margin: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                border: Border.all(),
-                                color: _loginController.isSignUp.value
-                                    ? AppColors.redIconGradient1
-                                    : Colors.white,
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(5),
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 8.0, right: 8, top: 10, bottom: 10),
-                                child: Center(
-                                  child: Text(
-                                    "SIGN UP",
-                                    style: TextStyle(
-                                        color:
-                                        _loginController.isSignUp.value
-                                            ? Colors.white
-                                            : Colors.black,
-
-                                        fontSize: 18),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
-                    _loginController.isSignIn.value == true ?  signInView()  : signUpView()
-                  ])
-          )
-        ))
-    );
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          _loginController.isSignIn.value = false;
+                          _loginController.isSignUp.value = true;
+                        });
+                      },
+                      child: Container(
+                        width: Get.width / 2.4,
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          color: _loginController.isSignUp.value
+                              ? AppColors.redIconGradient1
+                              : Colors.white,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(5),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 8.0, right: 8, top: 10, bottom: 10),
+                          child: Center(
+                            child: Text(
+                              "SIGN UP",
+                              style: TextStyle(
+                                  color: _loginController.isSignUp.value
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 18),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              _loginController.isSignIn.value == true
+                  ? signInView()
+                  : signUpView()
+            ])))));
   }
-  signInView(){
+
+  signInView() {
     return Container(
       child: Column(
         children: [
@@ -175,11 +176,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 decoration: InputDecoration(
                     isDense: true,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                    suffixIcon: Icon(Icons.phone,color: Color.fromRGBO(125,1,120,1),),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                    suffixIcon: Icon(
+                      Icons.phone,
+                      color: Color.fromRGBO(125, 1, 120, 1),
+                    ),
                     label: const Text('Mobile Number'),
-                    focusColor: Color.fromRGBO(125,1,120,1)
-                ),
+                    focusColor: Color.fromRGBO(125, 1, 120, 1)),
                 controller: phoneTextEditingController,
               ),
             ),
@@ -195,17 +199,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5.0),
-                          side: BorderSide(color:AppColors.redIconGradient1)
-                      )
-                  ),
+                          side: BorderSide(color: AppColors.redIconGradient1))),
                   elevation: MaterialStateProperty.all(3.0),
                   backgroundColor:
-                  MaterialStateProperty.all(AppColors.redIconGradient1),
+                      MaterialStateProperty.all(AppColors.redIconGradient1),
                   foregroundColor: MaterialStateProperty.all(Colors.white),
                 ),
                 child: Text(
                   'SIGN IN',
-                  style: TextStyle(color: Colors.white,fontSize: 18,letterSpacing: 0.6),
+                  style: TextStyle(
+                      color: Colors.white, fontSize: 18, letterSpacing: 0.6),
                 ),
                 onPressed: () {
                   if (!_formKeyMobileNumber.currentState!.validate()) {
@@ -216,19 +219,13 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 "New to GetYourDriver ?",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    ?.copyWith(
-                    color: Colors.black,
-                    decoration:
-                    TextDecoration.underline),
+                style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                    color: Colors.black, decoration: TextDecoration.underline),
               ),
               SizedBox(
                 width: 10,
@@ -247,33 +244,29 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Center(
                   child: Text(
                     "Sign up",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText2
-                        ?.copyWith(
+                    style: Theme.of(context).textTheme.bodyText2?.copyWith(
                         color: Colors.black,
-                        decoration:
-                        TextDecoration.underline),
+                        decoration: TextDecoration.underline),
                   ),
                 ),
               ),
             ],
           ),
-
         ],
       ),
     );
   }
-  signUpView(){
+
+  signUpView() {
     return Container(
       child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Form(
-              key: _formKeyMobileNumber,
+              key: _formKeyUserName,
               child: TextFormField(
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.text,
                 validator: (value) {
                   if (value!.isNotEmpty) {
                     return null;
@@ -283,19 +276,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 decoration: InputDecoration(
                     isDense: true,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15)),
                     // suffixIcon: Icon(Icons.phone,color: Color.fromRGBO(125,1,120,1),),
                     label: const Text('Full Name'),
-                    focusColor: AppColors.redIconGradient1
-                ),
-                controller: phoneTextEditingController,
+                    focusColor: AppColors.redIconGradient1),
+                controller: usernameTextEditingController,
               ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Form(
-              // key: _formKeyMobileNumber,
+              key: _formKeySingUpMobileNumber,
               child: TextFormField(
                 keyboardType: TextInputType.number,
                 validator: (value) {
@@ -307,21 +300,21 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 decoration: InputDecoration(
                     isDense: true,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15)),
                     // suffixIcon: Icon(Icons.phone,color: Color.fromRGBO(125,1,120,1),),
                     label: const Text('Mobile Number'),
-                    focusColor: Color.fromRGBO(125,1,120,1)
-                ),
-                controller: phoneTextEditingController,
+                    focusColor: Color.fromRGBO(125, 1, 120, 1)),
+                controller: phoneSignUpTextEditingController,
               ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Form(
-              // key: _formKeyMobileNumber,
+              key: _formKeyEmail,
               child: TextFormField(
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value!.isNotEmpty) {
                     return null;
@@ -331,26 +324,30 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 decoration: InputDecoration(
                     isDense: true,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15)),
                     // suffixIcon: Icon(Icons.phone,color: Color.fromRGBO(125,1,120,1),),
                     label: const Text('Email ID'),
-                    focusColor: AppColors.redIconGradient1
-                ),
-                controller: phoneTextEditingController,
+                    focusColor: AppColors.redIconGradient1),
+                controller: emailTextEditingController,
               ),
             ),
           ),
           Container(
             child: Row(
               children: [
-                Checkbox(value: checkBoxValue.value,
+                Checkbox(
+                    value: checkBoxValue.value,
                     activeColor: Colors.blue,
-    onChanged:(newValue){
-    setState(() {
-    checkBoxValue.value = newValue!;
-    });}),
+                    onChanged: (newValue) {
+                      setState(() {
+                        checkBoxValue.value = newValue!;
+                      });
+                    }),
                 Text('I agree all statements in'),
-                SizedBox(width: 10,),
+                SizedBox(
+                  width: 10,
+                ),
                 InkWell(
                   onTap: () {
                     // Navigator.push(
@@ -365,19 +362,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Center(
                     child: Text(
                       "terms of service",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText2
-                          ?.copyWith(
+                      style: Theme.of(context).textTheme.bodyText2?.copyWith(
                           color: Colors.black,
-                          decoration:
-                          TextDecoration.underline),
+                          decoration: TextDecoration.underline),
                     ),
                   ),
                 ),
               ],
             ),
-
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -389,23 +381,22 @@ class _MyHomePageState extends State<MyHomePage> {
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5.0),
-                          side: BorderSide(color: AppColors.redIconGradient1)
-                      )
-                  ),
+                          side: BorderSide(color: AppColors.redIconGradient1))),
                   elevation: MaterialStateProperty.all(3.0),
                   backgroundColor:
-                  MaterialStateProperty.all(AppColors.redIconGradient1),
+                      MaterialStateProperty.all(AppColors.redIconGradient1),
                   foregroundColor: MaterialStateProperty.all(Colors.white),
                 ),
                 child: Text(
                   'SIGN UP',
-                  style: TextStyle(color: Colors.white,fontSize: 18,letterSpacing: 0.6),
+                  style: TextStyle(
+                      color: Colors.white, fontSize: 18, letterSpacing: 0.6),
                 ),
                 onPressed: () {
-                  if (!_formKeyMobileNumber.currentState!.validate()) {
+                  if (!_formKeyUserName.currentState!.validate() || !_formKeySingUpMobileNumber.currentState!.validate() || !_formKeyEmail.currentState!.validate()) {
                     return;
                   }
-                  signInClick(phoneTextEditingController.text);
+                  signUpClick(phoneSignUpTextEditingController.text);
                 },
               ),
             ),
@@ -415,14 +406,13 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  signUpClick(var mobNumber)async{
+  signUpClick(var mobNumber) async {
     var headers = {
       'Cookie': 'ci_session=5ac53b9fb5f52fecf4fa02849e196d74d3854cac'
     };
-    var request = http.MultipartRequest('POST', Uri.parse('https://www.getyourdriver.com/user/signin'));
-    request.fields.addAll({
-      'mobile': '${mobNumber}'
-    });
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('https://www.getyourdriver.com/user/signin'));
+    request.fields.addAll({'mobile': '${mobNumber}'});
 
     request.headers.addAll(headers);
 
@@ -434,20 +424,18 @@ class _MyHomePageState extends State<MyHomePage> {
       Fluttertoast.showToast(msg: dd['message']);
 
       print('response: ${dd['message']}');
-    }
-    else {
+    } else {
       print(response.reasonPhrase);
     }
-
   }
-  signInClick(var mobNumber)async{
+
+  signInClick(var mobNumber) async {
     var headers = {
       'Cookie': 'ci_session=5ac53b9fb5f52fecf4fa02849e196d74d3854cac'
     };
-    var request = http.MultipartRequest('POST', Uri.parse('https://www.getyourdriver.com/user/signin'));
-    request.fields.addAll({
-      'mobile': '${mobNumber}'
-    });
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('https://www.getyourdriver.com/user/signin'));
+    request.fields.addAll({'mobile': '${mobNumber}'});
 
     request.headers.addAll(headers);
 
@@ -459,403 +447,393 @@ class _MyHomePageState extends State<MyHomePage> {
       Fluttertoast.showToast(msg: dd['message']);
 
       print('response: ${dd['message']}');
-    }
-    else {
+    } else {
       print(response.reasonPhrase);
     }
-
   }
+
   @override
   Widget build(BuildContext context) {
-       return Scaffold(
+    return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(12.0),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Color.fromRGBO(255, 153, 230, 1233),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        "Ready? Then\nlet's roll.",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        "Ride With Lorem -->",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16),
+                      ),
+                    )
+                  ],
+                ),
+                Column(
+                  children: [
+                    Container(
+                      height: Get.height * 0.26,
+                      width: Get.width * 0.44,
+                      margin: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Color.fromRGBO(255, 153, 230, 100),
+                      ),
+                      child: Image.asset(
+                        'assets/images/driver.jpg',
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: Get.height * 0.01,
+          ),
+          Container(
+              padding: EdgeInsets.only(left: 15, right: 15),
+              height: 150,
+              child: ListView.builder(
+                  itemCount: sellEarnList.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (BuildContext context, int index) {
+                    // String data = sellEarnList[index];
+                    return InkWell(
+                      onTap: () {
+                        if (index == 0) {
+                        } else {}
+                        // Navigator.of(context)
+                        // Get.toNamed(MRouter.sellAndEarn);
+                      },
+                      child: Column(
+                        children: [
+                          Card(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Radio(
+                                  value: 2,
+                                  groupValue: _radioSelected.value,
+                                  activeColor: AppColors.redColor,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _radioSelected.value = value!;
+                                      // _radioVal = 'male';
+                                      // _site = value;
+                                    });
+                                  },
+                                ),
+                                Image.asset(
+                                  "assets/images/car.jpg",
+                                  height: 30,
+                                  width: 80,
+                                )
+                              ],
+                            ),
+                          ),
+                          Text(sellEarnList[index])
+                        ],
+                      ),
+                    );
+                  })),
+          Row(
+            children: [
+              InkWell(
+                onTap: () {},
+                child: Container(
+                  width: MediaQuery.of(context).size.width / 2.2,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(25)),
+                      border: Border.all(color: AppColors.redIconGradient1),
+                      color: AppColors.redIconGradient1),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 8.0, right: 8, top: 8, bottom: 8),
+                    child: Center(
+                        child: Text(
+                      "One Way",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    )),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              InkWell(
+                onTap: () {},
+                child: Card(
+                  elevation: 7,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width / 2.4,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(25)),
+                      border: Border.all(
+                        color: Colors.white,
+                      ),
+                      color: Colors.white,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 8.0, right: 8.0, top: 8, bottom: 8),
+                      child: Center(
+                        child: Text(
+                          "Round Trip",
+                          style: TextStyle(color: Colors.black, fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 10),
+            width: Get.width,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(25)),
+              border: Border.all(
+                color: Color.fromRGBO(219, 220, 219, 120),
+              ),
+              color: Color.fromRGBO(219, 220, 219, 120),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 8.0, right: 8.0, top: 8, bottom: 8),
+              child: Row(
+                children: [
+                  Icon(Icons.search),
+                  Text(
+                    "Enter your pickup location",
+                    style: TextStyle(color: Colors.black, fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 10),
+            width: Get.width,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(25)),
+              border: Border.all(
+                color: Color.fromRGBO(219, 220, 219, 120),
+              ),
+              color: Color.fromRGBO(219, 220, 219, 120),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 8.0, right: 8.0, top: 8, bottom: 8),
+              child: Row(
+                children: [
+                  Icon(Icons.search),
+                  Text(
+                    "Enter your destination location",
+                    style: TextStyle(color: Colors.black, fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 10),
+            width: Get.width,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(25)),
+              border: Border.all(
+                color: Color.fromRGBO(219, 220, 219, 120),
+              ),
+              color: Color.fromRGBO(219, 220, 219, 120),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 8.0, right: 8.0, top: 8, bottom: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Select Date",
+                    style: TextStyle(color: Colors.black, fontSize: 16),
+                  ),
+                  Icon(Icons.date_range_outlined),
+                ],
+              ),
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Color.fromRGBO(255, 153, 230, 1233),
-                ),
+                margin: EdgeInsets.only(top: 10),
+                child: Text('Select Time'),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 8),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            "Ready? Then\nlet's roll.",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25),
-                          ),
+                    Center(
+                      child: Container(
+                        child: Text('From: '),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(25)),
+                        border: Border.all(
+                          color: Color.fromRGBO(219, 220, 219, 1),
                         ),
-                        Container(
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            "Ride With Lorem -->",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16),
-                          ),
-                        )
+                        color: Color.fromRGBO(219, 220, 219, 1),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8.0, right: 8.0, top: 8, bottom: 8),
+                        child: Text(
+                          "02:55AM",
+                          style: TextStyle(color: Colors.black, fontSize: 16),
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Container(
+                        child: Text(' To: '),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(25)),
+                        border: Border.all(
+                          color: Color.fromRGBO(219, 220, 219, 1),
+                        ),
+                        color: Color.fromRGBO(219, 220, 219, 1),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8.0, right: 8.0, top: 8, bottom: 8),
+                        child: Text(
+                          "04:55PM",
+                          style: TextStyle(color: Colors.black, fontSize: 16),
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Container(
+                        child: Text(' Total: 2hr '),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Radio(
+                          value: 1,
+                          groupValue: _radioSelected.value,
+                          activeColor: AppColors.redColor,
+                          onChanged: (value) {
+                            setState(() {
+                              _radioSelected.value = value!;
+                            });
+                          },
+                        ),
+                        const Text("MANUAL",
+                            style:
+                                TextStyle(color: Colors.black54, fontSize: 15)),
                       ],
                     ),
-                    Column(
+                    SizedBox(width: 30),
+                    Row(
                       children: [
-                        Container(
-                          height: Get.height * 0.26,
-                          width: Get.width * 0.44,
-                          margin: EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Color.fromRGBO(255, 153, 230, 100),
-                          ),
-                          child: Image.asset(
-                            'assets/images/driver.jpg',
-                            fit: BoxFit.cover,
-                          ),
-                        )
+                        Radio(
+                          value: 2,
+                          groupValue: _radioSelected.value,
+                          activeColor: AppColors.redColor,
+                          onChanged: (value) {
+                            setState(() {
+                              _radioSelected.value = value!;
+                              // _radioVal = 'male';
+                              // _site = value;
+                            });
+                          },
+                        ),
+                        Text("AUTOMATIC",
+                            style:
+                                TextStyle(color: Colors.black54, fontSize: 15)),
                       ],
                     ),
                   ],
                 ),
               ),
-              SizedBox(
-                height: Get.height * 0.01,
-              ),
-              Container(
-                  padding: EdgeInsets.only(left: 15, right: 15),
-                  height: 150,
-                  child: ListView.builder(
-                      itemCount: sellEarnList.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (BuildContext context, int index) {
-                        // String data = sellEarnList[index];
-                        return InkWell(
-                          onTap: () {
-                            if (index == 0) {
-                            } else {}
-                            // Navigator.of(context)
-                            // Get.toNamed(MRouter.sellAndEarn);
-                          },
-                          child: Column(
-                            children: [
-                              Card(
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                          Radio(
-                                            value: 2,
-                                            groupValue: _radioSelected.value,
-                                            activeColor: AppColors.redColor,
-                                            onChanged: (value) {
-                                              setState(() {
-                                                _radioSelected.value = value!;
-                                                // _radioVal = 'male';
-                                                // _site = value;
-                                              });
-                                            },
-                                          ),
-                                    Image.asset("assets/images/car.jpg",
-                                    height: 30,
-                                      width: 80,
-                                    )
-                                        ],
-
-                                ),
-                              ),
-                              Text(sellEarnList[index])
-                            ],
-                          ),
-                        );
-                      })),
-              Row(
-                children: [
-                  InkWell(
-                    onTap: () {
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 50.0,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              side: BorderSide(
+                                  color: AppColors.redIconGradient1))),
+                      // elevation: MaterialStateProperty.all(3.0),
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                      foregroundColor: MaterialStateProperty.all(Colors.white),
+                    ),
+                    child: Text(
+                      'Book Driver',
+                      style: TextStyle(
+                          color: AppColors.redIconGradient1,
+                          fontSize: 18,
+                          letterSpacing: 0.6),
+                    ),
+                    onPressed: () {
+                      _buildPopupDialog();
                     },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width / 2.2,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(25)),
-                          border: Border.all(color: AppColors.redIconGradient1),
-                          color: AppColors.redIconGradient1),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 8.0, right: 8, top: 8, bottom: 8),
-                        child: Center(
-                            child: Text(
-                          "One Way",
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        )),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: Card(
-                      elevation: 7,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width / 2.4,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(25)),
-                          border: Border.all(
-                            color: Colors.white,
-                          ),
-                          color: Colors.white,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 8.0, right: 8.0, top: 8, bottom: 8),
-                          child: Center(
-                            child: Text(
-                              "Round Trip",
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 16),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 10),
-                width: Get.width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(25)),
-                  border: Border.all(
-                    color: Color.fromRGBO(219, 220,219,120),
-                  ),
-                  color: Color.fromRGBO(219, 220,219,120),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 8.0, right: 8.0, top: 8, bottom: 8),
-                  child: Row(
-                    children: [
-                      Icon(Icons.search),
-                      Text(
-                        "Enter your pickup location",
-                        style:
-                        TextStyle(color: Colors.black, fontSize: 16),
-                      ),
-                    ],
                   ),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 10),
-                width: Get.width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(25)),
-                  border: Border.all(
-                    color: Color.fromRGBO(219, 220,219,120),
-                  ),
-                  color: Color.fromRGBO(219, 220,219,120),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 8.0, right: 8.0, top: 8, bottom: 8),
-                  child: Row(
-                    children: [
-                      Icon(Icons.search),
-                      Text(
-                        "Enter your destination location",
-                        style:
-                        TextStyle(color: Colors.black, fontSize: 16),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 10),
-                width: Get.width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(25)),
-                  border: Border.all(
-                    color: Color.fromRGBO(219, 220,219,120),
-                  ),
-                  color: Color.fromRGBO(219, 220,219,120),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 8.0, right: 8.0, top: 8, bottom: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Select Date",
-                        style:
-                        TextStyle(color: Colors.black, fontSize: 16),
-                      ),
-                      Icon(Icons.date_range_outlined),
-
-                    ],
-                  ),
-                ),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 10),
-                    child: Text('Select Time'),
-                  ),
-
-                  Container(
-                    margin: EdgeInsets.only(top: 8),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Center(
-                          child: Container(
-                            child: Text('From: '),
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(25)),
-                            border: Border.all(
-                              color: Color.fromRGBO(219, 220,219,1),
-                            ),
-                            color: Color.fromRGBO(219, 220,219,1),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8.0, top: 8, bottom: 8),
-                            child: Text(
-                              "02:55AM",
-                              style:
-                              TextStyle(color: Colors.black, fontSize: 16),
-                            ),
-                          ),
-                        ),   Center(
-                          child: Container(
-                            child: Text(' To: '),
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(25)),
-                            border: Border.all(
-                              color: Color.fromRGBO(219, 220,219,1),
-                            ),
-                            color: Color.fromRGBO(219, 220,219,1),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8.0, top: 8, bottom: 8),
-                            child: Text(
-                              "04:55PM",
-                              style:
-                              TextStyle(color: Colors.black, fontSize: 16),
-                            ),
-                          ),
-                        ),
-                        Center(
-                          child: Container(
-                            child: Text(' Total: 2hr '),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding:  EdgeInsets.only(top: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Radio(
-                              value: 1,
-                              groupValue: _radioSelected.value,
-                              activeColor: AppColors.redColor,
-                              onChanged: (value) {
-                                setState(() {
-                                  _radioSelected.value = value!;
-                                });
-                              },
-                            ),
-                            const Text("MANUAL",style: TextStyle(color: Colors.black54,fontSize: 15)),
-                          ],
-                        ),
-                        SizedBox(width: 30),
-                        Row(
-                          children: [
-                            Radio(
-                              value: 2,
-                              groupValue: _radioSelected.value,
-                              activeColor: AppColors.redColor,
-                              onChanged: (value) {
-                                setState(() {
-                                  _radioSelected.value = value!;
-                                  // _radioVal = 'male';
-                                  // _site = value;
-                                });
-                              },
-                            ),
-                            Text("AUTOMATIC",style: TextStyle(color: Colors.black54,fontSize: 15)),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 50.0,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  side: BorderSide(color: AppColors.redIconGradient1)
-                              )
-                          ),
-                          // elevation: MaterialStateProperty.all(3.0),
-                          backgroundColor:
-                          MaterialStateProperty.all(Colors.white),
-                          foregroundColor: MaterialStateProperty.all(Colors.white),
-                        ),
-                        child: Text(
-                          'Book Driver',
-                          style: TextStyle(color: AppColors.redIconGradient1,fontSize: 18,letterSpacing: 0.6),
-                        ),
-                        onPressed: () {
-                          _buildPopupDialog();
-                        },
-                      ),
-                    ),
-                  )
-
-                ],
-              ),
-            ]),
+              )
+            ],
+          ),
+        ]),
       ),
     );
   }
-
 }
-
