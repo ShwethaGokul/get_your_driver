@@ -1,7 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get_your_driver/screens/cab_booking/cab_booking_screen.dart';
+import 'package:get_your_driver/screens/cab_booking/screens/cab_booking_screen.dart';
 
 class MRouter {
   static const String splashRoute = 'SplashWidget';

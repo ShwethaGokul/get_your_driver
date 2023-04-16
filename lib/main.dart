@@ -1,8 +1,22 @@
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:get_your_driver/screens/cab_booking/cab_booking_screen.dart';
+import 'package:get_your_driver/screens/cab_booking/controller/cab_booking_controller.dart';
+import 'package:get_your_driver/screens/cab_booking/screens/cab_booking_screen.dart';
+import 'package:get_your_driver/screens/splash_screen/splash_ui.dart';
+import 'package:get_your_driver/services/location_service.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-void main() {
+void main()async {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
+  // FirebaseMessaging messaging = FirebaseMessaging.instance;
   runApp(const MyApp());
 }
 
@@ -18,38 +32,28 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: SplashScreen(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+   MyHomePage({super.key});
+  final isSelected = false.obs;
 
-  final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final _formKeyMobileNumber = GlobalKey<FormState>();
-  final _formKeySingUpMobileNumber = GlobalKey<FormState>();
-  final _formKeyUserName = GlobalKey<FormState>();
-  final _formKeyEmail= GlobalKey<FormState>();
-  var phoneTextEditingController = new TextEditingController();
-  var phoneSignUpTextEditingController = new TextEditingController();
-  var usernameTextEditingController = new TextEditingController();
-  var emailTextEditingController = new TextEditingController();
-  var checkBoxValue = false.obs;
 
-  final _radioSelected = 1.obs;
+  // FirebaseMessaging _firebaseMessaging;
 
   var sellEarnList = [
     "Cab Booking",
   ];
-
-
+  final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
   @override
   Widget build(BuildContext context) {
@@ -66,24 +70,26 @@ class _MyHomePageState extends State<MyHomePage> {
                   itemBuilder: (BuildContext context, int index) {
                     return InkWell(
                       onTap: () {
+                          widget.isSelected.value = true;
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => CabBookingScreen()));
                         },
                       child: Column(
                         children: [
-                          Card(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Image.asset(
-                                  "assets/images/car.jpg",
-                                  height: 80,
-                                  width: 80,
-                                )
-                              ],
+                       Container(
+                            decoration: BoxDecoration(
+                                color: Colors.grey.withOpacity(.4),
+                                borderRadius: BorderRadius.circular(10)),
+                            height: 90,
+                            width: 100,
+                            child: Center(
+                              child: SvgPicture.asset(
+                                "assets/svg_images/driver.svg",
+                                width: 50,
+                                height: 50,
+                                color: Colors.grey,
+                              )
                             ),
                           ),
-                          Text(sellEarnList[index])
                         ],
                       ),
                     );
@@ -91,302 +97,53 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+
+  @override
+  void initState() async{
+    // var data = await readAndroidBuildData(await deviceInfo.deviceInfo);
+
+    // print('call ini');
+    // final androiiNfor = await DeviceInfoPlugin().androidInfo;
+    // final androiVersion = androiiNfor.androidId;    // FirebaseMessaging.instance.getToken().then((newToken){
+    //   print('FCM Token: ${androiVersion}');
+    // // });
+    // LocationServices().determinePosition();
+    // getFcmToken();
+    super.initState();
+  }
+  getFcmToken()async{
+    // String? token = await FirebaseMessaging.instance.getToken();
+    // print('fcm token: $token');
+  }
+  Map<String, dynamic> readAndroidBuildData(AndroidDeviceInfo build) {
+    return <String, dynamic>{
+      'version.securityPatch': build.version.securityPatch,
+      'version.sdkInt': build.version.sdkInt,
+      'version.release': build.version.release,
+      'version.previewSdkInt': build.version.previewSdkInt,
+      'version.incremental': build.version.incremental,
+      'version.codename': build.version.codename,
+      'version.baseOS': build.version.baseOS,
+      'board': build.board,
+      'bootloader': build.bootloader,
+      'brand': build.brand,
+      'device': build.device,
+      'display': build.display,
+      'fingerprint': build.fingerprint,
+      'hardware': build.hardware,
+      'host': build.host,
+      'id': build.id,
+      'manufacturer': build.manufacturer,
+      'model': build.model,
+      'product': build.product,
+      'supported32BitAbis': build.supported32BitAbis,
+      'supported64BitAbis': build.supported64BitAbis,
+      'supportedAbis': build.supportedAbis,
+      'tags': build.tags,
+      'type': build.type,
+      'isPhysicalDevice': build.isPhysicalDevice,
+      'androidId': build.androidId,
+      'systemFeatures': build.systemFeatures,
+    };
+  }
 }
-// signInView() {
-//   return Container(
-//     child: Column(
-//       children: [
-//         SizedBox(height: 30),
-//         Padding(
-//           padding: const EdgeInsets.all(8.0),
-//           child: Form(
-//             key: _formKeyMobileNumber,
-//             child: TextFormField(
-//               keyboardType: TextInputType.number,
-//               validator: (value) {
-//                 if (value!.isNotEmpty) {
-//                   return null;
-//                 } else {
-//                   return 'Enter Mobile Number';
-//                 }
-//               },
-//               decoration: InputDecoration(
-//                   isDense: true,
-//                   border: OutlineInputBorder(
-//                       borderRadius: BorderRadius.circular(15)),
-//                   suffixIcon: Icon(
-//                     Icons.phone,
-//                     color: Color.fromRGBO(125, 1, 120, 1),
-//                   ),
-//                   label: const Text('Mobile Number'),
-//                   focusColor: Color.fromRGBO(125, 1, 120, 1)),
-//               controller: phoneTextEditingController,
-//             ),
-//           ),
-//         ),
-//         SizedBox(height: 40),
-//         Padding(
-//           padding: const EdgeInsets.all(8.0),
-//           child: SizedBox(
-//             width: double.infinity,
-//             height: 50.0,
-//             child: ElevatedButton(
-//               style: ButtonStyle(
-//                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-//                     RoundedRectangleBorder(
-//                         borderRadius: BorderRadius.circular(5.0),
-//                         side: BorderSide(color: AppColors.redIconGradient1))),
-//                 elevation: MaterialStateProperty.all(3.0),
-//                 backgroundColor:
-//                 MaterialStateProperty.all(AppColors.redIconGradient1),
-//                 foregroundColor: MaterialStateProperty.all(Colors.white),
-//               ),
-//               child: Text(
-//                 'SIGN IN',
-//                 style: TextStyle(
-//                     color: Colors.white, fontSize: 18, letterSpacing: 0.6),
-//               ),
-//               onPressed: () {
-//                 if (!_formKeyMobileNumber.currentState!.validate()) {
-//                   return;
-//                 }
-//                 signInClick(phoneTextEditingController.text);
-//               },
-//             ),
-//           ),
-//         ),
-//         Row(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             Text(
-//               "New to GetYourDriver ?",
-//               style: Theme.of(context).textTheme.bodyText2?.copyWith(
-//                   color: Colors.black, decoration: TextDecoration.underline),
-//             ),
-//             SizedBox(
-//               width: 10,
-//             ),
-//             InkWell(
-//               onTap: () {
-//                 // Navigator.push(
-//                 //   context,
-//                 //   MaterialPageRoute(
-//                 //     builder: (context) => ForgotPasswordScreen(),
-//                 //   ),
-//                 // );
-//                 // Navigator.pushReplacementNamed(
-//                 //     context, Routes.Signup);
-//               },
-//               child: Center(
-//                 child: Text(
-//                   "Sign up",
-//                   style: Theme.of(context).textTheme.bodyText2?.copyWith(
-//                       color: Colors.black,
-//                       decoration: TextDecoration.underline),
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ],
-//     ),
-//   );
-// }
-//
-// signUpView() {
-//   return Container(
-//     child: Column(
-//       children: [
-//         Padding(
-//           padding: const EdgeInsets.all(8.0),
-//           child: Form(
-//             key: _formKeyUserName,
-//             child: TextFormField(
-//               keyboardType: TextInputType.text,
-//               validator: (value) {
-//                 if (value!.isNotEmpty) {
-//                   return null;
-//                 } else {
-//                   return 'Enter Full Name';
-//                 }
-//               },
-//               decoration: InputDecoration(
-//                   isDense: true,
-//                   border: OutlineInputBorder(
-//                       borderRadius: BorderRadius.circular(15)),
-//                   // suffixIcon: Icon(Icons.phone,color: Color.fromRGBO(125,1,120,1),),
-//                   label: const Text('Full Name'),
-//                   focusColor: AppColors.redIconGradient1),
-//               controller: usernameTextEditingController,
-//             ),
-//           ),
-//         ),
-//         Padding(
-//           padding: const EdgeInsets.all(8.0),
-//           child: Form(
-//             key: _formKeySingUpMobileNumber,
-//             child: TextFormField(
-//               keyboardType: TextInputType.number,
-//               validator: (value) {
-//                 if (value!.isNotEmpty) {
-//                   return null;
-//                 } else {
-//                   return 'Full Mobile Number';
-//                 }
-//               },
-//               decoration: InputDecoration(
-//                   isDense: true,
-//                   border: OutlineInputBorder(
-//                       borderRadius: BorderRadius.circular(15)),
-//                   // suffixIcon: Icon(Icons.phone,color: Color.fromRGBO(125,1,120,1),),
-//                   label: const Text('Mobile Number'),
-//                   focusColor: Color.fromRGBO(125, 1, 120, 1)),
-//               controller: phoneSignUpTextEditingController,
-//             ),
-//           ),
-//         ),
-//         Padding(
-//           padding: const EdgeInsets.all(8.0),
-//           child: Form(
-//             key: _formKeyEmail,
-//             child: TextFormField(
-//               keyboardType: TextInputType.emailAddress,
-//               validator: (value) {
-//                 if (value!.isNotEmpty) {
-//                   return null;
-//                 } else {
-//                   return 'Email ID';
-//                 }
-//               },
-//               decoration: InputDecoration(
-//                   isDense: true,
-//                   border: OutlineInputBorder(
-//                       borderRadius: BorderRadius.circular(15)),
-//                   // suffixIcon: Icon(Icons.phone,color: Color.fromRGBO(125,1,120,1),),
-//                   label: const Text('Email ID'),
-//                   focusColor: AppColors.redIconGradient1),
-//               controller: emailTextEditingController,
-//             ),
-//           ),
-//         ),
-//         Container(
-//           child: Row(
-//             children: [
-//               Checkbox(
-//                   value: checkBoxValue.value,
-//                   activeColor: Colors.blue,
-//                   onChanged: (newValue) {
-//                     setState(() {
-//                       checkBoxValue.value = newValue!;
-//                     });
-//                   }),
-//               Text('I agree all statements in'),
-//               SizedBox(
-//                 width: 10,
-//               ),
-//               InkWell(
-//                 onTap: () {
-//                   // Navigator.push(
-//                   //   context,
-//                   //   MaterialPageRoute(
-//                   //     builder: (context) => ForgotPasswordScreen(),
-//                   //   ),
-//                   // );
-//                   // Navigator.pushReplacementNamed(
-//                   //     context, Routes.Signup);
-//                 },
-//                 child: Center(
-//                   child: Text(
-//                     "terms of service",
-//                     style: Theme.of(context).textTheme.bodyText2?.copyWith(
-//                         color: Colors.black,
-//                         decoration: TextDecoration.underline),
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//         Padding(
-//           padding: const EdgeInsets.all(8.0),
-//           child: SizedBox(
-//             width: double.infinity,
-//             height: 50.0,
-//             child: ElevatedButton(
-//               style: ButtonStyle(
-//                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-//                     RoundedRectangleBorder(
-//                         borderRadius: BorderRadius.circular(5.0),
-//                         side: BorderSide(color: AppColors.redIconGradient1))),
-//                 elevation: MaterialStateProperty.all(3.0),
-//                 backgroundColor:
-//                 MaterialStateProperty.all(AppColors.redIconGradient1),
-//                 foregroundColor: MaterialStateProperty.all(Colors.white),
-//               ),
-//               child: Text(
-//                 'SIGN UP',
-//                 style: TextStyle(
-//                     color: Colors.white, fontSize: 18, letterSpacing: 0.6),
-//               ),
-//               onPressed: () {
-//                 if (!_formKeyUserName.currentState!.validate() || !_formKeySingUpMobileNumber.currentState!.validate() || !_formKeyEmail.currentState!.validate()) {
-//                   return;
-//                 }
-//                 signUpClick(mobNumber: phoneSignUpTextEditingController.text,username: usernameTextEditingController.text,emailId: emailTextEditingController.text);
-//               },
-//             ),
-//           ),
-//         )
-//       ],
-//     ),
-//   );
-// }
-//
-// signUpClick({var username, var mobNumber, var emailId}) async {
-//   var headers = {
-//     'Cookie': 'ci_session=5ac53b9fb5f52fecf4fa02849e196d74d3854cac'
-//   };
-//   var request = http.MultipartRequest(
-//       'POST', Uri.parse('https://www.getyourdriver.com/user/signup'));
-//   request.fields.addAll({"name": username,
-//     "mobile": mobNumber,
-//     "email": emailId,
-//     "src": "Mobile"});
-//
-//   request.headers.addAll(headers);
-//
-//   http.StreamedResponse response = await request.send();
-//
-//   if (response.statusCode == 200) {
-//     var dd = json.decode(await response.stream.bytesToString());
-//
-//     Fluttertoast.showToast(msg: dd['message']);
-//
-//     print('response: ${dd['message']}');
-//   } else {
-//     print(response.reasonPhrase);
-//   }
-// }
-//
-// signInClick(var mobNumber) async {
-//   var headers = {
-//     'Cookie': 'ci_session=5ac53b9fb5f52fecf4fa02849e196d74d3854cac'
-//   };
-//   var request = http.MultipartRequest(
-//       'POST', Uri.parse('https://www.getyourdriver.com/user/signin'));
-//   request.fields.addAll({'mobile': '${mobNumber}'});
-//
-//   request.headers.addAll(headers);
-//
-//   http.StreamedResponse response = await request.send();
-//
-//   if (response.statusCode == 200) {
-//     var dd = json.decode(await response.stream.bytesToString());
-//
-//     Fluttertoast.showToast(msg: dd['message']);
-//
-//     print('response: ${dd['message']}');
-//   } else {
-//     print(response.reasonPhrase);
-//   }
-// }

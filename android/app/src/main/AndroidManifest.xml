@@ -1,7 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.getyourdriver.get_your_driver">
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission." />
+
    <application
-        android:label="get_your_driver"
+        android:label="GYD"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
