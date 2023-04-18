@@ -66,6 +66,9 @@ class CabBookingController extends GetxController {
   var selectedLtlongPickup = ''.obs;
   var selectedLtlongDrop = ''.obs;
 
+ var selectedLtlongPickupInMonthlyPackage = ''.obs;
+  var selectedLtlongDropInMonthlyPackage = ''.obs;
+
   var estimateHrsSlider = 0.0.obs;
   var estimateDaySlider = 0.0.obs;
 
@@ -212,30 +215,63 @@ class CabBookingController extends GetxController {
     return token!;
   }
 
-  getPlaces(var query) async {
-    var headers = {'x-api-key': ''};
-    var request = http.Request(
-        'GET',
-        Uri.parse(
-            'https://api.mapbox.com/geocoding/v5/mapbox.places/$query.json?country=In&autocomplete=true&limit=5&access_token=pk.eyJ1Ijoic2phaW5pcGMiLCJhIjoiY2tkZXV0d3B0MjY3MzJzazYwZ3N5aWFzdiJ9.n8_KmlL4cy-leNsLSXln1g'));
+ Future getPlaces(var query) async {
+    var headers = {
+      'x-api-key': 'R9OH5BHSKP8XGYDQGMC6OBAZ'
+    };
+    var request = http.Request('GET', Uri.parse('https://api.mapbox.com/geocoding/v5/mapbox.places/$query.json?country=In&autocomplete=true&limit=5&access_token=pk.eyJ1Ijoic2phaW5pcGMiLCJhIjoiY2tkZXV0d3B0MjY3MzJzazYwZ3N5aWFzdiJ9.n8_KmlL4cy-leNsLSXln1g'));
 
     request.headers.addAll(headers);
+    print('StreamedResponse ${request}');
 
     http.StreamedResponse response = await request.send();
-    List<String> listDtt = [];
+    print('StreamedResponse ${response}');
+
     if (response.statusCode == 200) {
-      var listData = await response.stream.bytesToString();
-      var jsonCod = json.decode(listData);
-      for (var i = 0; i < jsonCod['features'].length; i++) {
-        mapListDtt.value[jsonCod['features'][i]['place_name']] =
-            jsonCod['features'][i]['center'];
-        listDtt.add(jsonCod['features'][i]['place_name']);
-        suggestons = listDtt;
+      List<String> listDtt = [];
+      if (response.statusCode == 200) {
+        var listData = await response.stream.bytesToString();
+        var jsonCod = json.decode(listData);
+        for (var i = 0; i < jsonCod['features'].length; i++) {
+          mapListDtt.value[jsonCod['features'][i]['place_name']] =
+          jsonCod['features'][i]['center'];
+          listDtt.add(jsonCod['features'][i]['place_name']);
+          suggestons = listDtt;
+        }
+        print("listData: ${mapListDtt.value}");
+      } else {
+        print(response.reasonPhrase);
       }
-      print("listData: ${mapListDtt.value}");
-    } else {
+    }
+    else {
       print(response.reasonPhrase);
     }
+
+    // var headers = {'x-api-key': 'R9OH5BHSKP8XGYDQGMC6OBAZ'};
+    // var request = http.Request(
+    //     'GET',
+    //     Uri.parse(
+    //         'https://api.mapbox.com/geocoding/v5/mapbox.places/$query.json?country=In&autocomplete=true&limit=5&access_token=pk.eyJ1Ijoic2phaW5pcGMiLCJhIjoiY2tkZXV0d3B0MjY3MzJzazYwZ3N5aWFzdiJ9.n8_KmlL4cy-leNsLSXln1g'));
+    //
+    // request.headers.addAll(headers);
+    //
+    // http.StreamedResponse response = await request.send();
+    // print('request: ${response}');
+    //
+    // List<String> listDtt = [];
+    // if (response.statusCode == 200) {
+    //   var listData = await response.stream.bytesToString();
+    //   var jsonCod = json.decode(listData);
+    //   for (var i = 0; i < jsonCod['features'].length; i++) {
+    //     mapListDtt.value[jsonCod['features'][i]['place_name']] =
+    //         jsonCod['features'][i]['center'];
+    //     listDtt.add(jsonCod['features'][i]['place_name']);
+    //     suggestons = listDtt;
+    //   }
+    //   print("listData: ${mapListDtt.value}");
+    // } else {
+    //   print(response.reasonPhrase);
+    // }
   }
 
   getEstimatFare(BuildContext context) async {

@@ -106,11 +106,11 @@ class _CabBookingScreenState extends State<CabBookingScreen> {
                                                     .getCurrentAddress.value ==
                                                 ""
                                             ? Container(
-                                                margin: EdgeInsets.all(10),
+                                                margin: const EdgeInsets.all(10),
                                                 width: 5,
                                                 height: 5,
                                                 child:
-                                                    CircularProgressIndicator(
+                                                    const CircularProgressIndicator(
                                                   color: Colors.redAccent,
                                                   strokeWidth: 2,
                                                 ))
@@ -185,11 +185,11 @@ class _CabBookingScreenState extends State<CabBookingScreen> {
                 color: Colors.grey.shade200,
                 borderRadius: BorderRadius.circular(10)),
             child: RawAutocomplete(
-              optionsBuilder: (TextEditingValue textEditingValue) {
+              optionsBuilder: (TextEditingValue textEditingValue) async {
                 if (textEditingValue.text == '') {
                   return const Iterable<String>.empty();
                 } else {
-                  cabBookingController.getPlaces(textEditingValue.text);
+                 await cabBookingController.getPlaces(textEditingValue.text.trim());
                   List<String> matches = <String>[];
                   matches.addAll(cabBookingController.suggestons);
                   matches.retainWhere((s) {
@@ -529,8 +529,6 @@ class _CabBookingScreenState extends State<CabBookingScreen> {
                             cabBookingController.dropDownValue1 = splitedData[2];
                       },
                     );
-                    print('dropdonvalue: ${cabBookingController.dropDownValue1}');
-
                   }),
             ),
           ),
@@ -1194,9 +1192,16 @@ class _CabBookingScreenState extends State<CabBookingScreen> {
                               children: options.map((opt) {
                                 return InkWell(
                                     onTap: () {
-                                      var getLtlogn = cabBookingController.mapListDtt.value[opt];
-                                       cabBookingController.selectedLtlongMonthlyPickup.value = getLtlogn.toString().replaceAll('[', '').toString().replaceAll(']', '');
-                                        cabBookingController.getEstimatFareForMonthly(context);
+                                      var getLtlogn = (cabBookingController.mapListDtt.value[opt]);
+                                        cabBookingController.selectedLtlongMonthlyPickup.value = getLtlogn.toString().replaceAll('[', '').toString().replaceAll(']', '');
+                                        cabBookingController.getEstimatFare(context);
+                                        cabBookingController.monthlyPackagePickupLocationController.text = opt;
+                                        cabBookingController.dropEditingTextController.text = opt;
+                                        print('cabBookingController: ${cabBookingController.pickupEditingTextController.text}');
+                                      //  if (cabBookingController.selectedLtlongDrop.isNotEmpty) {
+                                      //   cabBookingController.dropEditingTextController.text = opt;
+                                      //   cabBookingController.getEstimatFare(context);
+                                      // }
                                       onSelected(opt);
                                     },
                                     child: Container(
@@ -1408,8 +1413,7 @@ class _CabBookingScreenState extends State<CabBookingScreen> {
           ),
         )),
         SizedBox(
-          height: Get.height * 0.02,
-        ),
+          height: Get.height * 0.02,),
         Obx(() => Container(
               margin: const EdgeInsets.only(left: 12, right: 12),
               child: Row(
@@ -1507,8 +1511,13 @@ class _CabBookingScreenState extends State<CabBookingScreen> {
               ),
               onPressed: () async {
                 var prefs = await SharedPreferences.getInstance();
-                if (prefs.getString(SPKeys.USERTOKEN) != null) {
-                } else {
+                if (prefs.getString(SPKeys.USERTOKEN).toString() != "null"){
+                  if(cabBookingController.selectedLtlongPickup.value.isNotEmpty && cabBookingController.selectedLtlongDrop.isNotEmpty) {
+                    cabBookingController.addListForBookDriver(context);
+                  } else {
+                    Fluttertoast.showToast(msg: "All fields are Mandatory !!!");
+                  }
+                }else{
                   SignInPage().bottomSheet(context);
                 }
               },
