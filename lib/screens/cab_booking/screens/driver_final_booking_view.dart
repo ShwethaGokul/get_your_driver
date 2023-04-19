@@ -4,6 +4,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get_your_driver/screens/cab_booking/controller/driver_final_booking_controller.dart';
 import 'package:intl/intl.dart';
 
+import 'driver_booked_comfirmed.dart';
+
 class DriverBookingFinalPage extends StatefulWidget {
    DriverBookingFinalPage({Key? key,this.listData}) : super(key: key);
   var listData;
@@ -295,7 +297,13 @@ class _DriverBookingFinalPageState extends State<DriverBookingFinalPage> {
                       ),
                       onPressed: () {
                         driverFinalBookingController.isLoading.value = true;
-                        driverFinalBookingController.bookingDriver(context,widget.listData);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DriverBookedConfirmed()),
+                        );
+                        // driverFinalBookingController.isLoading.value = true;
+                        // driverFinalBookingController.bookingDriver(context,widget.listData);
                       },
                     ),
                   ),

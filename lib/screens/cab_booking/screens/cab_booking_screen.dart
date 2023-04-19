@@ -9,6 +9,7 @@ import '../../../helper/size/size.dart';
 import '../../../helper/textstyle.dart';
 import '../../../helper/widgets/booking_option.dart';
 import '../../../helper/widgets/drop_down.dart';
+import '../../../helper/widgets/navigator_drawer.dart';
 import '../../../helper/widgets/time_field.dart';
 import '../../login/sign_in_screen.dart';
 import '../controller/cab_booking_controller.dart';
@@ -44,88 +45,99 @@ class _CabBookingScreenState extends State<CabBookingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      appBar: AppBar(
+        backgroundColor: Colors.red,
+       title: Image.asset(
+          'assets/logo/logo_gyd (2).png',
+          fit: BoxFit.contain,
+         height: 40,
+        ),
+        elevation: 0,
+      ),
+      drawer: Drawer(),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
-              height: 160.0,
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                    color: Colors.red,
-                    width: MediaQuery.of(context).size.width,
-                    height: Get.height * 0.16,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(children: [
-                        IconButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        const Text(
-                          "Book your Driver",
-                          style: TextStyle(color: Colors.white, fontSize: 18.0),
-                        ),
-                      ]),
-                    ),
-                  ),
-                  Positioned(
-                    top: 100.0,
-                    left: 0.0,
-                    right: 0.0,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            border: Border.all(color: Colors.black, width: 0.2),
-                            color: Colors.white),
-                        child: Row(
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.all(5.0),
-                              child: Icon(
-                                Icons.location_on,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Obx(() => Expanded(
-                                  child: TextField(
-                                    controller: cabBookingController
-                                        .searchAddressController,
-                                    decoration: InputDecoration(
-                                        hintText: cabBookingController
-                                            .getCurrentAddress.value,
-                                        suffixIcon: cabBookingController
-                                                    .getCurrentAddress.value ==
-                                                ""
-                                            ? Container(
-                                                margin: const EdgeInsets.all(10),
-                                                width: 5,
-                                                height: 5,
-                                                child:
-                                                    const CircularProgressIndicator(
-                                                  color: Colors.redAccent,
-                                                  strokeWidth: 2,
-                                                ))
-                                            : null,
-                                        border: InputBorder.none),
-                                  ),
-                                )),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
+            // SizedBox(
+            //   height: 160.0,
+            //   child: Stack(
+            //     children: <Widget>[
+            //       Container(
+            //         color: Colors.red,
+            //         width: MediaQuery.of(context).size.width,
+            //         height: Get.height * 0.16,
+            //         child: Padding(
+            //           padding: const EdgeInsets.all(8.0),
+            //           child: Row(children: [
+            //             IconButton(
+            //               onPressed: () {
+            //                 Navigator.of(context).pop();
+            //               },
+            //               icon: const Icon(
+            //                 Icons.arrow_back,
+            //                 color: Colors.white,
+            //               ),
+            //             ),
+            //             const SizedBox(width: 10),
+            //             const Text(
+            //               "Book your Driver",
+            //               style: TextStyle(color: Colors.white, fontSize: 18.0),
+            //             ),
+            //           ]),
+            //         ),
+            //       ),
+            //       Positioned(
+            //         top: 100.0,
+            //         left: 0.0,
+            //         right: 0.0,
+            //         child: Container(
+            //           padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            //           child: DecoratedBox(
+            //             decoration: BoxDecoration(
+            //                 borderRadius: BorderRadius.circular(10.0),
+            //                 border: Border.all(color: Colors.black, width: 0.2),
+            //                 color: Colors.white),
+            //             child: Row(
+            //               children: [
+            //                 const Padding(
+            //                   padding: EdgeInsets.all(5.0),
+            //                   child: Icon(
+            //                     Icons.location_on,
+            //                     color: Colors.black,
+            //                   ),
+            //                 ),
+            //                 Obx(() => Expanded(
+            //                       child: TextField(
+            //                         controller: cabBookingController
+            //                             .searchAddressController,
+            //                         decoration: InputDecoration(
+            //                             hintText: cabBookingController
+            //                                 .getCurrentAddress.value,
+            //                             suffixIcon: cabBookingController
+            //                                         .getCurrentAddress.value ==
+            //                                     ""
+            //                                 ? Container(
+            //                                     margin: const EdgeInsets.all(10),
+            //                                     width: 5,
+            //                                     height: 5,
+            //                                     child:
+            //                                         const CircularProgressIndicator(
+            //                                       color: Colors.redAccent,
+            //                                       strokeWidth: 2,
+            //                                     ))
+            //                                 : null,
+            //                             border: InputBorder.none),
+            //                       ),
+            //                     )),
+            //               ],
+            //             ),
+            //           ),
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // ),
+            SizedBox(height: 20,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -640,9 +652,10 @@ class _CabBookingScreenState extends State<CabBookingScreen> {
               ),
             )
         ),
-        SizedBox(
-          height: Get.height * 0.02,
-        ),
+
+       Obx(() =>  SizedBox(
+          height: cabBookingController.isOneWaySelected.value ? Get.height * 0.02 : Get.height * 0.098,
+        )),
         Container(
           margin: const EdgeInsets.only(left: 12, right: 12, bottom: 15),
           child: SizedBox(
@@ -670,11 +683,11 @@ class _CabBookingScreenState extends State<CabBookingScreen> {
                 print('selectltlog: ${cabBookingController.selectedLtlongPickup.value} ${cabBookingController.selectedLtlongDrop} ${cabBookingController.estimatedFareForInCity}');
                 var prefs = await SharedPreferences.getInstance();
                    if (prefs.getString(SPKeys.USERTOKEN).toString() != "null"){
-                     if(cabBookingController.selectedLtlongPickup.value.isNotEmpty && cabBookingController.selectedLtlongDrop.isNotEmpty) {
+                     // if(cabBookingController.selectedLtlongPickup.value.isNotEmpty && cabBookingController.selectedLtlongDrop.isNotEmpty) {
                      cabBookingController.addListForBookDriver(context);
-                   } else {
-                       Fluttertoast.showToast(msg: "All fields are Mandatory !!!");
-                     }
+                   // } else {
+                   //     Fluttertoast.showToast(msg: "All fields are Mandatory !!!");
+                   //   }
                 }else{
                      SignInPage().bottomSheet(context);
                    }
@@ -685,6 +698,405 @@ class _CabBookingScreenState extends State<CabBookingScreen> {
       ],
     );
   }
+  Widget monthlyView() {
+    return Column(
+      children: [
+        Container(
+            margin: const EdgeInsets.only(right: 10, left: 10, bottom: 15),
+            height: 43,
+            decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: BorderRadius.circular(10)),
+            child: RawAutocomplete(
+              optionsBuilder: (TextEditingValue textEditingValue) {
+                if (textEditingValue.text == '') {
+                  return const Iterable<String>.empty();
+                } else {
+                  cabBookingController.getPlaces(textEditingValue.text);
+                  List<String> matches = <String>[];
+                  matches.addAll(cabBookingController.suggestons);
+                  matches.retainWhere((s) {
+                    return s
+                        .toLowerCase()
+                        .contains(textEditingValue.text.toLowerCase());
+                  });
+                  return matches;
+                }
+              },
+              onSelected: (String selection) {
+              },
+              fieldViewBuilder: (BuildContext context,
+                  TextEditingController textEditingController,
+                  FocusNode focusNode,
+                  VoidCallback onFieldSubmitted) {
+                return TextField(
+                  decoration: const InputDecoration(
+                      isDense: true,
+                      hintText: 'Enter Your Pickup location',
+                      border: InputBorder.none,
+                      icon: Padding(
+                        padding: EdgeInsets.only(left: 8.0, top: 10),
+                        child: Icon(
+                          Icons.search,
+                          color: Color(0xffFF7373),
+                          size: 25,
+                        ),
+                      )),
+                  controller: textEditingController,
+                  focusNode: focusNode,
+                  onSubmitted: (String value) {},
+                  onChanged: (vale) {
+                    if (vale.isEmpty) {
+                      cabBookingController.selectedLtlongMonthlyPickup.value = '';
+                    }
+                  },
+                );
+              },
+              optionsViewBuilder: (BuildContext context1,
+                  void Function(String) onSelected, Iterable<String> options) {
+                return Material(
+                    child: SizedBox(
+                        height: 100,
+                        child: SingleChildScrollView(
+                            child: Column(
+                              children: options.map((opt) {
+                                return InkWell(
+                                    onTap: () {
+                                      var getLtlogn = (cabBookingController.mapListDtt.value[opt]);
+                                      cabBookingController.selectedLtlongMonthlyPickup.value = getLtlogn.toString().replaceAll('[', '').toString().replaceAll(']', '');
+                                      cabBookingController.getEstimatFare(context);
+                                      cabBookingController.monthlyPackagePickupLocationController.text = opt;
+                                      print('cabBookingController: ${cabBookingController.monthlyPackagePickupLocationController.text}');
+                                      //  if (cabBookingController.selectedLtlongDrop.isNotEmpty) {
+                                      //   cabBookingController.dropEditingTextController.text = opt;
+                                      //   cabBookingController.getEstimatFare(context);
+                                      // }
+                                      onSelected(opt);
+                                    },
+                                    child: Container(
+                                        padding: EdgeInsets.only(right: 18),
+                                        child: Card(
+                                            child: Container(
+                                              width: double.infinity,
+                                              padding: EdgeInsets.all(10),
+                                              child: Text(opt),
+                                            ))));
+                              }).toList(),
+                            ))));
+              },
+            )),
+        SizedBox(
+          width: MediaQuery.of(context).size.width * .95,
+          height: 45,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: BorderRadius.circular(10)),
+            child: TextField(
+              controller:
+              cabBookingController.dateInput,
+              decoration: InputDecoration(
+                  hintText: '  Select Date',
+                  hintStyle: Tstyles.greycolor16,
+                  border: InputBorder.none,
+                  suffixIcon: const Icon(Icons.calendar_month,
+                    color: Color(0xffFF7373),
+                  )),
+              readOnly: true,
+              onTap: () {
+                cabBookingController.selectDate(context);
+              },
+            ),
+          ),
+        ),
+        SizedBox(
+          height: Get.height * 0.02,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            InkWell(
+              onTap: (){
+                cabBookingController.showHoursDialogForMonthly(context);
+              },
+              child: Obx(() => Container(
+                margin: EdgeInsets.only(left: 15,right: 15),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom: 5),
+                      child: const Text('Select Hours'),),
+                    Container(
+                        width: MediaQuery.of(context).size.width /3,
+                        height: 45,
+                        child: DecoratedBox(
+                            decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Center(
+                              child: Text("${cabBookingController.selectHours.value.toStringAsFixed(0)} hrs"),
+                            ))),
+                  ],
+                ),
+              )),
+            ),
+            InkWell(
+              onTap: (){cabBookingController.showDayDialogForMonthly(context);},
+              child: Obx(() => Container(
+                margin: EdgeInsets.only(left: 15,right: 15),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom: 5),
+                      child: const Text('Select Days'),),
+                    Container(
+                        width: MediaQuery.of(context).size.width /3,
+                        height: 45,
+                        child: DecoratedBox(
+                            decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Center(
+                              child: Text("${cabBookingController.selectDays.value.toStringAsFixed(0)} days"),
+                            ))),
+                  ],
+                ),
+              )),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: Get.height * 0.02,
+        ),
+        Container(
+          margin: const EdgeInsets.only(right: 10),
+          width: Get.width,
+          child: CustomTextFormField(
+            isReadOnly: false,
+            textEditingController:
+            cabBookingController.monthlyPackageNoteController,
+            hint: 'Enter Note',
+          ),
+        ),
+        SizedBox(
+          height: Get.height * 0.02,
+        ),
+        Container(
+          margin: const EdgeInsets.only(left: 10, right: 10),
+          width: Get.width,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                color: Colors.grey.shade200),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton(
+                    style: const TextStyle(fontSize: 14, color: Colors.black),
+                    isDense: true,
+                    value: cabBookingController.selectedMonthlyPackage,
+                    onChanged: (newValue) {
+                      setState(() {
+                        cabBookingController.selectedMonthlyPackage = newValue!;
+                      });
+                    },
+                    items: cabBookingController.dropdownItemsMonthlyPackage),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: Get.height * 0.02,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Radio(
+                  value: 1,
+                  groupValue: cabBookingController.radioSelected.value,
+                  activeColor: const Color(0xffFF7373),
+                  onChanged: (value) {
+                    setState(() {
+                      cabBookingController.radioSelected.value = value!;
+                    });
+                  },
+                ),
+                const Text("MANUAL",
+                    style: TextStyle(color: Colors.black, fontSize: 15)),
+              ],
+            ),
+            Row(
+              children: [
+                Radio(
+                  value: 2,
+                  groupValue: cabBookingController.radioSelected.value,
+                  activeColor: const Color(0xffFF7373),
+                  onChanged: (value) {
+                    setState(() {
+                      cabBookingController.radioSelected.value = value!;
+                    });
+                  },
+                ),
+                const Text("AUTOMATIC",
+                    style: TextStyle(color: Colors.black, fontSize: 15)),
+              ],
+            ),
+          ],
+        ),
+        SizedBox(
+          height: Get.height * 0.01,
+        ),
+        DropDown(),
+        Obx(() => Container(
+          margin: EdgeInsets.only(left: 15,right: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  const Text(
+                    "Show Price Breakup",
+                  ),
+                  SizedBox(width: 8),
+                  InkWell(
+                    onTap: (){
+                      if(cabBookingController.viewBreakUpPriceMonthly.value.isNotEmpty)
+                        cabBookingController.showPriceBreakupMonthly(context);
+                    },
+                    child: const Icon(
+                        Icons.remove_red_eye_outlined,
+                        color: Color(0xffFF7373)
+                    ),
+                  )
+                ],
+              ),
+              Text(
+                "₹ ${cabBookingController.estimatedFareForMonthly.value}",
+                style: const TextStyle(fontSize: 20, color: Color(0xffFF7373),
+                ),
+              ),
+            ],
+          ),
+        )),
+        SizedBox(
+          height: Get.height * 0.02,),
+        Obx(() => Container(
+          margin: const EdgeInsets.only(left: 12, right: 12),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                height: 45,
+                width: Get.width / 2.40,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    shape:
+                    MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            side: const BorderSide(
+                                color: Color(0xffFF7373)))),
+                    backgroundColor: cabBookingController
+                        .isPrivateSelected.value
+                        ? MaterialStateProperty.all(const Color(0xffFF7373))
+                        : MaterialStateProperty.all(Colors.white),
+                    foregroundColor:
+                    MaterialStateProperty.all(const Color(0xffFF7373)),
+                  ),
+                  child: Text(
+                    'PRIVATE',
+                    style: TextStyle(
+                      color: cabBookingController.isPrivateSelected.value
+                          ? Colors.white
+                          : const Color(0xffFF7373),
+                      fontSize: 15,
+                    ),
+                  ),
+                  onPressed: () {
+                    cabBookingController.selectMonthlyPrivate(true);
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 45,
+                width: Get.width / 2.40,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    shape:
+                    MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            side: const BorderSide(
+                                color: Color(0xffFF7373)))),
+                    backgroundColor: cabBookingController
+                        .isCormmercialSelected.value
+                        ? MaterialStateProperty.all(const Color(0xffFF7373))
+                        : MaterialStateProperty.all(Colors.white),
+                    foregroundColor:
+                    MaterialStateProperty.all(const Color(0xffFF7373)),
+                  ),
+                  child: Text(
+                    'COMMERCIAL',
+                    style: TextStyle(
+                        color: cabBookingController.isCormmercialSelected.value
+                            ? Colors.white
+                            : const Color(0xffFF7373),
+                        fontSize: 15),
+                  ),
+                  onPressed: () {
+                    cabBookingController.selectMonthlyPrivate(false);
+                  },
+                ),
+              ),
+            ],
+          ),
+        )),
+        SizedBox(
+          height: Get.height * 0.02,
+        ),
+        Container(
+          margin: const EdgeInsets.only(left: 12, right: 12, bottom: 15),
+          child: SizedBox(
+            height: 45,
+            width: Get.width,
+            child: ElevatedButton(
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        side: const BorderSide(color: Color(0xffFF7373)))),
+                backgroundColor: MaterialStateProperty.all(Colors.white),
+                foregroundColor: MaterialStateProperty.all(Colors.white),
+              ),
+              child: const Text(
+                'BOOK DRIVER',
+                style: TextStyle(
+                  color: Color(0xffFF7373),
+                  fontSize: 15,
+                ),
+              ),
+              onPressed: () async {
+                var prefs = await SharedPreferences.getInstance();
+                if (prefs.getString(SPKeys.USERTOKEN).toString() != "null"){
+                  if(cabBookingController.selectedLtlongPickup.value.isNotEmpty && cabBookingController.selectedLtlongDrop.isNotEmpty) {
+                    cabBookingController.addListForBookDriver(context);
+                  } else {
+                    Fluttertoast.showToast(msg: "All fields are Mandatory !!!");
+                  }
+                }else{
+                  SignInPage().bottomSheet(context);
+                }
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
 
   Widget outstationView() {
     return Column(
@@ -1128,403 +1540,4 @@ class _CabBookingScreenState extends State<CabBookingScreen> {
     );
   }
 
-  Widget monthlyView() {
-    return Column(
-      children: [
-        Container(
-            margin: const EdgeInsets.only(right: 10, left: 10, bottom: 15),
-            height: 43,
-            decoration: BoxDecoration(
-                color: Colors.grey.shade200,
-                borderRadius: BorderRadius.circular(10)),
-            child: RawAutocomplete(
-              optionsBuilder: (TextEditingValue textEditingValue) {
-                if (textEditingValue.text == '') {
-                  return const Iterable<String>.empty();
-                } else {
-                  cabBookingController.getPlaces(textEditingValue.text);
-                  List<String> matches = <String>[];
-                  matches.addAll(cabBookingController.suggestons);
-                  matches.retainWhere((s) {
-                    return s
-                        .toLowerCase()
-                        .contains(textEditingValue.text.toLowerCase());
-                  });
-                  return matches;
-                }
-              },
-              onSelected: (String selection) {
-              },
-              fieldViewBuilder: (BuildContext context,
-                  TextEditingController textEditingController,
-                  FocusNode focusNode,
-                  VoidCallback onFieldSubmitted) {
-                return TextField(
-                  decoration: const InputDecoration(
-                      isDense: true,
-                      hintText: 'Enter Your Pickup location',
-                      border: InputBorder.none,
-                      icon: Padding(
-                        padding: EdgeInsets.only(left: 8.0, top: 10),
-                        child: Icon(
-                          Icons.search,
-                          color: Color(0xffFF7373),
-                          size: 25,
-                        ),
-                      )),
-                  controller: textEditingController,
-                  focusNode: focusNode,
-                  onSubmitted: (String value) {},
-                  onChanged: (vale) {
-                    if (vale.isEmpty) {
-                      cabBookingController.selectedLtlongMonthlyPickup.value = '';
-                    }
-                  },
-                );
-              },
-              optionsViewBuilder: (BuildContext context1,
-                  void Function(String) onSelected, Iterable<String> options) {
-                return Material(
-                    child: SizedBox(
-                        height: 100,
-                        child: SingleChildScrollView(
-                            child: Column(
-                              children: options.map((opt) {
-                                return InkWell(
-                                    onTap: () {
-                                      var getLtlogn = (cabBookingController.mapListDtt.value[opt]);
-                                        cabBookingController.selectedLtlongMonthlyPickup.value = getLtlogn.toString().replaceAll('[', '').toString().replaceAll(']', '');
-                                        cabBookingController.getEstimatFare(context);
-                                        cabBookingController.monthlyPackagePickupLocationController.text = opt;
-                                        cabBookingController.dropEditingTextController.text = opt;
-                                        print('cabBookingController: ${cabBookingController.pickupEditingTextController.text}');
-                                      //  if (cabBookingController.selectedLtlongDrop.isNotEmpty) {
-                                      //   cabBookingController.dropEditingTextController.text = opt;
-                                      //   cabBookingController.getEstimatFare(context);
-                                      // }
-                                      onSelected(opt);
-                                    },
-                                    child: Container(
-                                        padding: EdgeInsets.only(right: 18),
-                                        child: Card(
-                                            child: Container(
-                                              width: double.infinity,
-                                              padding: EdgeInsets.all(10),
-                                              child: Text(opt),
-                                            ))));
-                              }).toList(),
-                            ))));
-              },
-            )),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * .95,
-          height: 45,
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-                color: Colors.grey.shade200,
-                borderRadius: BorderRadius.circular(10)),
-            child: TextField(
-              controller:
-                  cabBookingController.dateInput,
-              decoration: InputDecoration(
-                  hintText: '  Select Date',
-                  hintStyle: Tstyles.greycolor16,
-                  border: InputBorder.none,
-                  suffixIcon: const Icon(Icons.calendar_month,
-                  color: Color(0xffFF7373),
-                  )),
-              readOnly: true,
-              onTap: () {
-                cabBookingController.selectDate(context);
-              },
-            ),
-          ),
-        ),
-        SizedBox(
-          height: Get.height * 0.02,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            InkWell(
-              onTap: (){
-                cabBookingController.showHoursDialogForMonthly(context);
-              },
-              child: Obx(() => Container(
-                margin: EdgeInsets.only(left: 15,right: 15),
-                child: Column(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(bottom: 5),
-                      child: const Text('Select Hours'),),
-                    Container(
-                        width: MediaQuery.of(context).size.width /3,
-                        height: 45,
-                        child: DecoratedBox(
-                            decoration: BoxDecoration(
-                                color: Colors.grey.shade200,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Center(
-                              child: Text("${cabBookingController.selectHours.value.toStringAsFixed(0)} hrs"),
-                            ))),
-                  ],
-                ),
-              )),
-            ),
-            InkWell(
-              onTap: (){cabBookingController.showDayDialogForMonthly(context);},
-              child: Obx(() => Container(
-                margin: EdgeInsets.only(left: 15,right: 15),
-                child: Column(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(bottom: 5),
-                      child: const Text('Select Days'),),
-                    Container(
-                        width: MediaQuery.of(context).size.width /3,
-                        height: 45,
-                        child: DecoratedBox(
-                            decoration: BoxDecoration(
-                                color: Colors.grey.shade200,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Center(
-                              child: Text("${cabBookingController.selectDays.value.toStringAsFixed(0)} days"),
-                            ))),
-                  ],
-                ),
-              )),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: Get.height * 0.02,
-        ),
-        Container(
-          margin: const EdgeInsets.only(right: 10),
-          width: Get.width,
-          child: CustomTextFormField(
-            isReadOnly: false,
-            textEditingController:
-                cabBookingController.monthlyPackageNoteController,
-            hint: 'Enter Note',
-          ),
-        ),
-        SizedBox(
-          height: Get.height * 0.02,
-        ),
-        Container(
-          margin: const EdgeInsets.only(left: 10, right: 10),
-          width: Get.width,
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: Colors.grey.shade200),
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton(
-                    style: const TextStyle(fontSize: 14, color: Colors.black),
-                    isDense: true,
-                    value: cabBookingController.selectedMonthlyPackage,
-                    onChanged: (newValue) {
-                      setState(() {
-                        cabBookingController.selectedMonthlyPackage = newValue!;
-                      });
-                    },
-                    items: cabBookingController.dropdownItemsMonthlyPackage),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(
-          height: Get.height * 0.02,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Radio(
-                  value: 1,
-                  groupValue: cabBookingController.radioSelected.value,
-                  activeColor: const Color(0xffFF7373),
-                  onChanged: (value) {
-                    setState(() {
-                      cabBookingController.radioSelected.value = value!;
-                    });
-                  },
-                ),
-                const Text("MANUAL",
-                    style: TextStyle(color: Colors.black, fontSize: 15)),
-              ],
-            ),
-            Row(
-              children: [
-                Radio(
-                  value: 2,
-                  groupValue: cabBookingController.radioSelected.value,
-                  activeColor: const Color(0xffFF7373),
-                  onChanged: (value) {
-                    setState(() {
-                      cabBookingController.radioSelected.value = value!;
-                    });
-                  },
-                ),
-                const Text("AUTOMATIC",
-                    style: TextStyle(color: Colors.black, fontSize: 15)),
-              ],
-            ),
-          ],
-        ),
-        SizedBox(
-          height: Get.height * 0.01,
-        ),
-         DropDown(),
-        Obx(() => Container(
-          margin: EdgeInsets.only(left: 15,right: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  const Text(
-                    "Show Price Breakup",
-                  ),
-                  SizedBox(width: 8),
-                  InkWell(
-                    onTap: (){
-                      if(cabBookingController.viewBreakUpPriceMonthly.value.isNotEmpty)
-                        cabBookingController.showPriceBreakupMonthly(context);
-                    },
-                    child: const Icon(
-                      Icons.remove_red_eye_outlined,
-                        color: Color(0xffFF7373)
-                    ),
-                  )
-                ],
-              ),
-              Text(
-                "₹ ${cabBookingController.estimatedFareForMonthly.value}",
-                style: const TextStyle(fontSize: 20, color: Color(0xffFF7373),
-                ),
-              ),
-            ],
-          ),
-        )),
-        SizedBox(
-          height: Get.height * 0.02,),
-        Obx(() => Container(
-              margin: const EdgeInsets.only(left: 12, right: 12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    height: 45,
-                    width: Get.width / 2.40,
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    side: const BorderSide(
-                                        color: Color(0xffFF7373)))),
-                        backgroundColor: cabBookingController
-                                .isPrivateSelected.value
-                            ? MaterialStateProperty.all(const Color(0xffFF7373))
-                            : MaterialStateProperty.all(Colors.white),
-                        foregroundColor:
-                            MaterialStateProperty.all(const Color(0xffFF7373)),
-                      ),
-                      child: Text(
-                        'PRIVATE',
-                        style: TextStyle(
-                          color: cabBookingController.isPrivateSelected.value
-                              ? Colors.white
-                              : const Color(0xffFF7373),
-                          fontSize: 15,
-                        ),
-                      ),
-                      onPressed: () {
-                        cabBookingController.selectMonthlyPrivate(true);
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 45,
-                    width: Get.width / 2.40,
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    side: const BorderSide(
-                                        color: Color(0xffFF7373)))),
-                        backgroundColor: cabBookingController
-                                .isCormmercialSelected.value
-                            ? MaterialStateProperty.all(const Color(0xffFF7373))
-                            : MaterialStateProperty.all(Colors.white),
-                        foregroundColor:
-                            MaterialStateProperty.all(const Color(0xffFF7373)),
-                      ),
-                      child: Text(
-                        'COMMERCIAL',
-                        style: TextStyle(
-                            color: cabBookingController.isCormmercialSelected.value
-                                ? Colors.white
-                                : const Color(0xffFF7373),
-                            fontSize: 15),
-                      ),
-                      onPressed: () {
-                        cabBookingController.selectMonthlyPrivate(false);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            )),
-        SizedBox(
-          height: Get.height * 0.02,
-        ),
-        Container(
-          margin: const EdgeInsets.only(left: 12, right: 12, bottom: 15),
-          child: SizedBox(
-            height: 45,
-            width: Get.width,
-            child: ElevatedButton(
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        side: const BorderSide(color: Color(0xffFF7373)))),
-                backgroundColor: MaterialStateProperty.all(Colors.white),
-                foregroundColor: MaterialStateProperty.all(Colors.white),
-              ),
-              child: const Text(
-                'BOOK DRIVER',
-                style: TextStyle(
-                  color: Color(0xffFF7373),
-                  fontSize: 15,
-                ),
-              ),
-              onPressed: () async {
-                var prefs = await SharedPreferences.getInstance();
-                if (prefs.getString(SPKeys.USERTOKEN).toString() != "null"){
-                  if(cabBookingController.selectedLtlongPickup.value.isNotEmpty && cabBookingController.selectedLtlongDrop.isNotEmpty) {
-                    cabBookingController.addListForBookDriver(context);
-                  } else {
-                    Fluttertoast.showToast(msg: "All fields are Mandatory !!!");
-                  }
-                }else{
-                  SignInPage().bottomSheet(context);
-                }
-              },
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

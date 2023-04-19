@@ -113,7 +113,7 @@ class CabBookingController extends GetxController {
     DateTime? pickedDate = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime(1950),
+        firstDate: DateTime.now(),
         lastDate: DateTime(2100));
     if (pickedDate != null) {
       String formattedDate = DateFormat('  dd/MM/yyyy').format(pickedDate);

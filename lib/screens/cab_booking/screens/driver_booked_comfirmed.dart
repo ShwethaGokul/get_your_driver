@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -8,6 +9,8 @@ import 'package:http/http.dart' as http;
 
 import '../../../helper/constansts.dart';
 import '../controller/driver_final_booking_controller.dart';
+import '../controller/driver_search_controller.dart';
+
 
 class DriverBookedConfirmed extends StatefulWidget {
    DriverBookedConfirmed({Key? key,this.bookedData}) : super(key: key);
@@ -19,18 +22,39 @@ class DriverBookedConfirmed extends StatefulWidget {
 
 class _DriverBookedConfirmedState extends State<DriverBookedConfirmed> {
    var listData = {}.obs;
+   Duration duration = Duration();
 
+   Timer? timer;
+   var start = 30.obs;
  @override
   void initState() {
     // TODO: implement initState
-   DriverFinalBookingController().searchDriver(widget.bookedData['booking_id']).
-   then((stat) {
-     listData.value = json.decode(stat);
-     print("statdd: ${listData.value}");
-   });
+   // DriverSearchController().startTimer();
+   startTimer();
+   // DriverFinalBookingController().searchDriver(widget.bookedData['booking_id']).
+   // then((stat) {
+   //   listData.value = json.decode(stat);
+   //   print("statdd: ${listData.value}");
+   // });
     super.initState();
   }
-  @override
+
+   void startTimer() {
+     const oneSec = const Duration(seconds: 1);
+     print('onesec $oneSec');
+     timer = new Timer.periodic(
+       oneSec,
+           (Timer timer) {
+         if (start.value == 0) {
+           timer.cancel();
+         } else {
+           start.value--;
+         }
+       },
+     );
+   }
+
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -57,12 +81,24 @@ class _DriverBookedConfirmedState extends State<DriverBookedConfirmed> {
             height: MediaQuery.of(context).size.height/3,
           ),
       )),
-        listData.value['message'].toString() != 'null' ?  Expanded(child: Container(
-            margin: EdgeInsets.only(left: 10,right: 10,top: 20),
-            child: Text(listData.value['message'].toString(),style: TextStyle(fontSize: 16, color: Colors.black,fontWeight: FontWeight.w600),)))
-        : const Text('Please wait we are searching driver....',style: TextStyle(fontSize: 16, color: Colors.black,fontWeight: FontWeight.w600),),
-        const Text('Your Booking ID',style: TextStyle(fontSize: 22,color:  Color(0xffFF7373),fontWeight: FontWeight.w600,letterSpacing: 0.6),),
-        Text('${widget.bookedData['booking_id']}',style: TextStyle(fontSize: 22, color: Color(0xffFF7373),fontWeight: FontWeight.w600,letterSpacing: 0.6),),
+        // listData.value['message'].toString() != 'null' ?  Expanded(child: Container(
+        //     margin: EdgeInsets.only(left: 10,right: 10,top: 20),
+        //     child: Text(listData.value['message'].toString(),style: TextStyle(fontSize: 16, color: Colors.black,fontWeight: FontWeight.w600),)))
+        // :
+         Text('Please wait we are searching driver....',style: TextStyle(fontSize: 16, color: Colors.black,fontWeight: FontWeight.w600),),
+        Container(
+            width: MediaQuery.of(context).size.width / 4,
+            height: 40,
+            margin: EdgeInsets.only(top: 10),
+            child: DecoratedBox(
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade200,
+                    borderRadius: BorderRadius.circular(10)),
+                child: Center(
+                  child:
+                  Text("${start}",style: TextStyle(fontSize: 22),),
+                ))) ,       const Text('Your Booking ID',style: TextStyle(fontSize: 26,color:  Color(0xffFF7373),fontWeight: FontWeight.w600,letterSpacing: 0.6),),
+        // Text('${widget.bookedData['booking_id']}',style: TextStyle(fontSize: 22, color: Color(0xffFF7373),fontWeight: FontWeight.w600,letterSpacing: 0.6),),
         const Spacer(),
         SizedBox(
           height: 45,

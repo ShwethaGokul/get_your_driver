@@ -43,9 +43,9 @@ class DriverFinalBookingController extends GetxController{
         'Cookie': 'ci_session=73be70994220d94f4c643c64829cb585f31957bf'
       };
       var request = http.MultipartRequest('POST', Uri.parse(
-          '${URLs.STATGING_BASE_URL}stagging/${URLs.book_driver}?token=v3spiwllinxu0rsv0rfbzxbhydscx4rckfc'));
+          '${URLs.STATGING_BASE_URL}stagging/${URLs.book_driver}?token=bphl0a9iqruczaepnhbb0quxqpz1tiqbchi'));
       request.fields.addAll({
-        'token': 'v3spiwllinxu0rsv0rfbzxbhydscx4rckfc',
+        'token': 'bphl0a9iqruczaepnhbb0quxqpz1tiqbchi',
         'booking_type': 'ONEWAY',
         'car_type': 'MANUAL-Hatchback',
         'trip_type': 'In City',

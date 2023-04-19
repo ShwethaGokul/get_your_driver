@@ -49,6 +49,7 @@ dependencies:
   device_info_plus: ^3.2.3
   email_validator: ^2.1.17
   syncfusion_flutter_sliders: ^21.1.38
+  widget_circular_animator: ^1.0.0
 #  cloud_firestore: any
 #  firebase_storage: any
 
